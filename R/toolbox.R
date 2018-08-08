@@ -353,8 +353,8 @@ nodf_one_link_removed <- function(mtx, pos, support_data){
     mt_t[ypos] <- mt_t[ypos] - 1
 
     # Update the degree matrix:
-    m0 <- matrix(mt_0[xpos], nrow=length(mt_0), ncol=1)
-    mt <- matrix(mt_t[ypos], nrow=length(mt_t), ncol=1)
+    m0 <- rep(mt_0[xpos], length(mt_0))
+    mt <- rep(mt_t[ypos], length(mt_t))
 
     # Update the degree minima:
     DM0[xpos,] <- pmin(m0, mt_0)
@@ -445,8 +445,10 @@ nodf_one_link_added <- function(mtx, pos, support_data){
     mt_t[ypos] <- mt_t[ypos] + 1
 
     # Update the degree matrix:
-    m0 <- matrix(mt_0[xpos], nrow=length(mt_0), ncol=1)
-    mt <- matrix(mt_t[ypos], nrow=length(mt_t), ncol=1)
+    # m0 <- matrix(mt_0[xpos], nrow=length(mt_0), ncol=1)
+    # mt <- matrix(mt_t[ypos], nrow=length(mt_t), ncol=1)
+    m0 <- rep(mt_0[xpos], length(mt_0))
+    mt <- rep(mt_t[ypos], length(mt_t))
 
     # Update the degree minima:
     DM0[xpos,] <- pmin(m0, mt_0)

@@ -5,28 +5,26 @@ greedy_add_link <- function(mtx, support_data){
     zPosList <- websearch_NODF_fast(mtx)
     opt_nodf <- -100.0
     opt_pos <- c(-1,-1)
+    opt_res  <- 0
     for(idx in 1:nrow(zPosList)){
         zPos <- zPosList[idx, ]
         my_res <- nodf_one_link_added(mtx, zPos, support_data)
         new_nodf <- my_res[[1]]
-        mtx <- my_res[[2]]
-        support_data <- my_res[[3]]
+        # mtx <- my_res[[2]]
+        # support_data <- my_res[[3]]
         if(new_nodf > opt_nodf){
             opt_nodf <- new_nodf
             opt_pos <- zPos
+            opt_res <- my_res
         }
+        # Reverting is not necessary as the changes are never accepted!
         # Revert the change:
-        my_res <- nodf_one_link_removed(mtx, zPos, support_data)
-        new_nodf <- my_res[[1]]
-        mtx <- my_res[[2]]
-        support_data <- my_res[[3]]
+        # my_res <- nodf_one_link_removed(mtx, zPos, support_data)
+        # new_nodf <- my_res[[1]]
+        # mtx <- my_res[[2]]
+        # support_data <- my_res[[3]]
     }
-    # actually perform the update
-    my_res <- nodf_one_link_added(mtx, opt_pos, support_data)
-    nodf <- my_res[[1]]
-    mtx <- my_res[[2]]
-
-    return(my_res)
+    return(opt_res)
 }
 
 greedy_add_link_smart <- function(mtx, support_data){
@@ -46,7 +44,7 @@ greedy_add_link_smart <- function(mtx, support_data){
             opt_nodf <- new_nodf
             opt_pos <- zPos
         }
-        if(new_nodf == opt_nodf){
+        else if(new_nodf == opt_nodf){
             score_old <- (opt_pos[1] / NodesA) + (opt_pos[2] / NodesB)
             score_new <- (zPos[1] / NodesA) + (zPos[2] / NodesB)
             if(score_new < score_old){
@@ -78,7 +76,7 @@ greedy_solve <- function(NodesA, NodesB, Edges){
     tp <- txtProgressBar(min = sum(mtx), max = Edges, style = 3)
     while(sum(mtx) < Edges){
         my_res <- greedy_add_link_smart(mtx, support_data)
-        nodf <-my_res[[1]]
+        nodf <- my_res[[1]]
         mtx <- my_res[[2]]
         support_data <- my_res[[3]]
         setTxtProgressBar(tp, sum(mtx))
