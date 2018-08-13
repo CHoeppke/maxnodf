@@ -8,7 +8,7 @@ cost_function <- function(nodf_value){
 
 sim_anneal_step <- function(mtx, temp, iters, support_data){
     opt_mtx <- mtx
-    opt_cost <- cost_function(nestedness_NODF (mtx))
+    opt_cost <- cost_function(nodf_cpp(mtx))
     old_cost <- opt_cost
     oPosList <- get_valid_ones(mtx)
     zPosList <- get_zeros(mtx)
@@ -35,7 +35,7 @@ sim_anneal_step <- function(mtx, temp, iters, support_data){
         new_cost <- cost_function(new_nodf)
         acc_prob <- accept_probability(new_cost, old_cost, temp)
 
-        if(runif(1,0,1) <= acc_prob){
+        if(stats::runif(1,0,1) <= acc_prob){
             # Accept the new solution:
             mtx <- new_mtx
             support_data <- new_support_data
@@ -57,7 +57,7 @@ sim_anneal_optimisation <- function(mtx, alpha = 0.998, iters = 6, init_temp = 0
 
     # Allocate space for the optimal variables:
     opt_mtx <- mtx
-    opt_nodf <- nestedness_NODF(mtx)
+    opt_nodf <- nodf_cpp(mtx)
     opt_cost <- cost_function(opt_nodf)
 
     temp <- init_temp
@@ -67,9 +67,9 @@ sim_anneal_optimisation <- function(mtx, alpha = 0.998, iters = 6, init_temp = 0
     support_data <- init_nodf(mtx)
     opt_support_data <- init_nodf(opt_mtx)
 
-    pb <- txtProgressBar(min = 0, max = cool_steps, style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = cool_steps, style = 3)
     for(i in 1:cool_steps){
-        setTxtProgressBar(pb, i)
+        utils::setTxtProgressBar(pb, i)
         my_res <- sim_anneal_step(mtx, temp, iters, support_data)
         new_opt_mtx <- my_res[[1]]
         new_opt_cost <- my_res[[2]]
@@ -82,14 +82,14 @@ sim_anneal_optimisation <- function(mtx, alpha = 0.998, iters = 6, init_temp = 0
             # Hill climb at this point once I have implemented it!
             print("Hill Climbing!")
             opt_mtx <- full_hill_climb(opt_mtx)
-            opt_nodf <- nestedness_NODF(opt_mtx)
+            opt_nodf <- nodf_cpp(opt_mtx)
             opt_cost <- cost_function(opt_nodf)
             opt_support_data <- init_nodf(opt_mtx)
             # print(opt_nodf)
         }
         # Test to see if we should go back to the optimal solution
         acc_prob <- accept_probability(opt_cost, new_cost, temp)
-        if(runif(1,0,1) > acc_prob){
+        if(stats::runif(1,0,1) > acc_prob){
             mtx <- opt_mtx
             support_data <- opt_support_data
         }
@@ -105,7 +105,7 @@ sim_anneal_optimisation2 <- function(mtx, alpha= 0.998, iters=6, init_temp = 0.2
 
     # Allocate space for the optimal variables:
     opt_mtx <- mtx
-    opt_nodf <- nestedness_NODF(mtx)
+    opt_nodf <- nodf_cpp(mtx)
     opt_cost <- cost_function(opt_nodf)
 
     temp <- init_temp
@@ -131,13 +131,13 @@ sim_anneal_optimisation2 <- function(mtx, alpha= 0.998, iters=6, init_temp = 0.2
     ND0 <- ND[[1]]*1
     NDt <- ND[[2]]*1
 
-    pb <- txtProgressBar(min = 0, max = cool_steps, style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = cool_steps, style = 3)
     for(i in 1:cool_steps){
-        setTxtProgressBar(pb, i)
+        utils::setTxtProgressBar(pb, i)
         # The inner sim_anneal_step:
 
         inner_opt_mtx <- mtx
-        inner_opt_cost <- cost_function(nestedness_NODF (mtx))
+        inner_opt_cost <- cost_function(nodf_cpp(mtx))
         inner_old_cost <- inner_opt_cost
         oPosList <- get_valid_ones_cpp(mtx)
         zPosList <- get_zeros(mtx)
@@ -161,7 +161,7 @@ sim_anneal_optimisation2 <- function(mtx, alpha= 0.998, iters=6, init_temp = 0.2
             new_cost <- cost_function(new_nodf)
             acc_prob <- accept_probability(new_cost, inner_old_cost, temp)
 
-            if(runif(1,0,1) <= acc_prob){
+            if(stats::runif(1,0,1) <= acc_prob){
                 # Accept the new solution:
                 # Accept by not reverting back and updating the old_cost
                 inner_old_cost <- new_cost
@@ -180,7 +180,7 @@ sim_anneal_optimisation2 <- function(mtx, alpha= 0.998, iters=6, init_temp = 0.2
             # Hill climb at this point once I have implemented it!
             print("Hill Climbing!")
             opt_mtx <- full_hill_climb(opt_mtx)
-            opt_nodf <- nestedness_NODF(opt_mtx)
+            opt_nodf <- nodf_cpp(opt_mtx)
             opt_cost <- cost_function(opt_nodf)
             opt_support_data <- init_nodf(opt_mtx)
             print(opt_nodf)
@@ -188,10 +188,10 @@ sim_anneal_optimisation2 <- function(mtx, alpha= 0.998, iters=6, init_temp = 0.2
         # Test to see if we should go back to the optimal solution
         acc_prob <- accept_probability(new_cost, opt_cost, temp)
         print(c("acc_prob", acc_prob, 1.0 - opt_cost, 1.0 - new_cost))
-        if(runif(1,0,1) > acc_prob){
+        if(stats::runif(1,0,1) > acc_prob){
             print("Back to the optimum")
             mtx <- opt_mtx
-            print(c(nestedness_NODF(mtx), 1.0 - opt_cost))
+            print(c(nodf_cpp(mtx), 1.0 - opt_cost))
             new_cost <- opt_cost
             # support_data <- init_nodf(mtx)
             # Re-unpack the support data:

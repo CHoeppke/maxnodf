@@ -5,7 +5,7 @@ hill_climb_step <- function(mtx, R){
     oPosList <- get_valid_ones(mtx)
     support_data <- init_nodf(mtx)
     opt_mtx <- mtx
-    opt_nodf <- nestedness_NODF(mtx)
+    opt_nodf <- nodf_cpp(mtx)
     for(idx in 1:nrow(oPosList)){
         opos <- oPosList[idx,]
         for(xshift in -R:R){
@@ -58,11 +58,11 @@ hill_climb_step2 <- function(mtx, R){
     NDt <- ND[[2]]*1
 
     opt_mtx <- mtx[,]
-    opt_nodf <- nestedness_NODF(opt_mtx)
+    opt_nodf <- nodf_cpp(opt_mtx)
 
-    tp <- txtProgressBar(min = 1, max = nrow(oPosList), style = 3)
+    tp <- utils::txtProgressBar(min = 1, max = nrow(oPosList), style = 3)
     for(idx in 1:nrow(oPosList)){
-        setTxtProgressBar(tp, idx)
+        utils::setTxtProgressBar(tp, idx)
         opos <- oPosList[idx,]
         for(xshift in -R:R){
             for(yshift in -R:R){
@@ -89,9 +89,9 @@ hill_climb_step2 <- function(mtx, R){
 full_hill_climb <- function(mtx, R=1){
     old_nodf <- -100.0
     count <- 0
-    while(old_nodf < nestedness_NODF(mtx)){
+    while(old_nodf < nodf_cpp(mtx)){
         count <- count + 1
-        old_nodf <- nestedness_NODF(mtx)
+        old_nodf <- nodf_cpp(mtx)
         mtx <- hill_climb_step2(mtx, R)
     }
     return(mtx)

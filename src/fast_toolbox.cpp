@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 #include <math.h>
-#include <stdlib.h>
 #include <omp.h>
+#include <iostream>
 // [[Rcpp::plugins(openmp)]]
 using namespace Rcpp;
 
@@ -11,6 +11,11 @@ using namespace Rcpp;
 
 // For more on using Rcpp click the Help button on the editor toolbar
 
+int my_rand_int(int floor, int ceil){
+    double x1 = runif(1, floor, ceil)[0];
+    int result = (int) (x1 + 0.5);
+    return result;
+}
 
 // [[Rcpp::export]]
 NumericVector pmin3(NumericVector vec1, NumericVector vec2){
@@ -602,7 +607,6 @@ NumericMatrix full_hill_climb_cpp(NumericMatrix mtx, int R = 2){
 // [[Rcpp::export]]
 NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         iters = 8, double init_temp = 0.25, double min_temp = 0.0001){
-
     // Outer frame of the simulated annealing simulation
     int cool_steps = round(log(min_temp / init_temp) /log(alpha));
 
@@ -643,8 +647,8 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         display_txt_pbar(progress);
         for (int j = 0; j < iters; ++j) {
             // Choose random positions to swap:
-            int oIdx = rand() % oPosList.nrow();
-            int zIdx = rand() % zPosList.nrow();
+            int oIdx = my_rand_int(0, oPosList.nrow() - 1);
+            int zIdx = my_rand_int(0, zPosList.nrow() - 1);
             NumericVector oPos = get_row_from_mtx(oPosList, oIdx);
             NumericVector zPos = get_row_from_mtx(zPosList, zIdx);
 
@@ -674,7 +678,7 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
                 S_opt = computeS(opt_mtx);
 
             }
-            double rand_number = ((double) rand() / (RAND_MAX));
+            double rand_number = runif(0, 0.0 , 1.0)[0];
             double acc_prob= accept_probability_cpp(old_nodf, new_nodf, temp);
             if(rand_number <= acc_prob){
                 // Accept the move by not changing the matrix back
@@ -699,7 +703,7 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         // Test if we should go back to the optimal solution:
         if(curr_nodf < 0.95 * opt_nodf){
             // Revert to the optimal solution:
-            Rcout << "Back to the optimum." << std::endl;
+            // Rcout << "Back to the optimum." << std::endl;
             curr_nodf = opt_nodf;
             mtx = copy_mtx(opt_mtx);
             mt_0 = computeMT0(mtx);
