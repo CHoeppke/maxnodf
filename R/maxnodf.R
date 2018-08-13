@@ -19,10 +19,10 @@ maxnodf <- function(web, quality = 0){
     }
     mt_0  <- computeMT0(web)
     mt_t  <- computeMT0(web)
-    if(any(mt_0) < 1){
+    if(any(mt_0 < 1)){
         stop("Invalid network. Ensure all marginal totals are >= 1.")
     }
-    if(any(mt_t) < 1){
+    if(any(mt_t < 1)){
         stop("Invalid network. Ensure all marginal totals are >= 1.")
     }
     NodesA <- nrow(web)
