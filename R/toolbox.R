@@ -1,5 +1,3 @@
-library(nnet)
-
 #function that loads the plant-pollinator network
 #input: number = label of a network
 #output: web = mutualsitic network
@@ -9,6 +7,13 @@ load_data <- function(){
     web <- as.matrix(d)
     web[web > 0] = 1
     return(web)
+}
+
+pmin2 <- function(xvec, yvec){
+    #res <- pmin3(xvec, yvec)
+    #print(c(length(xvec), length(yvec), length(res)))
+    #return(res)
+    return(((xvec + yvec) - (abs(xvec - yvec))) / 2)
 }
 
 #computes the raw NODF
@@ -25,7 +30,7 @@ nestedness_NODF <- function(web){
     dele <- den - t(den)
     dele[lower.tri(dele,diag=TRUE)] <- 1
     num[dele == 0] <- 0
-    den <- pmin(den,t(den))
+    den <- pmin2(den,t(den))
     den[lower.tri(den,diag=TRUE)] = 1
     nes <- num/den
     nes[lower.tri(nes,diag=TRUE)] = 0
@@ -38,7 +43,7 @@ nestedness_NODF <- function(web){
     dele <- den - t(den)
     dele[lower.tri(dele,diag=TRUE)] <- 1
     num[dele ==0 ] <- 0
-    den <- pmin(den,t(den))
+    den <- pmin2(den,t(den))
     den[lower.tri(den,diag=TRUE)]=1
     nes <- num/den
     nes[lower.tri(nes,diag=TRUE)] = 0
@@ -259,8 +264,8 @@ compute_deg_minima <- function(mtx){
     my_ans <- compute_deg_mtx(mtx)
     DM0 <- my_ans[[1]]
     DMt <- my_ans[[2]]
-    deg_min0 <- pmin(DM0, t(DM0))
-    deg_mint <- pmin(DMt, t(DMt))
+    deg_min0 <- pmin2(DM0, t(DM0))
+    deg_mint <- pmin2(DMt, t(DMt))
     return(list(deg_min0, deg_mint))
 }
 
@@ -288,7 +293,7 @@ compute_sums <- function(mtx){
     n_parist = Ft[NDt] / (DMt[NDt])
     sum0 = sum(n_paris0)
     sumt = sum(n_parist)
-    return(list(sum0, sumt))
+    return(c(sum0, sumt))
 }
 
 # Assembles the list containing all the additional data required
@@ -341,7 +346,7 @@ nodf_one_link_removed <- function(mtx, pos, support_data){
     my_norm <- 0.5*((NodesA *(NodesA -1)) + (NodesB*(NodesB-1)))
     # print("B6")
     # Modify the matrix appropriately (remove a link):
-    mtx[xpos, ypos] <- 0.0
+    put_val(mtx, xpos, ypos, 0.0)
     # print("C")
 
     # Compute old contributions
@@ -357,10 +362,10 @@ nodf_one_link_removed <- function(mtx, pos, support_data){
     mt <- rep(mt_t[ypos], length(mt_t))
 
     # Update the degree minima:
-    DM0[xpos,] <- pmin(m0, mt_0)
-    DM0[,xpos] <- pmin(m0, mt_0)
-    DMt[ypos,] <- pmin(mt, mt_t)
-    DMt[,ypos] <- pmin(mt, mt_t)
+    DM0[xpos,] <- pmin3(m0, mt_0)
+    DM0[,xpos] <- pmin3(m0, mt_0)
+    DMt[ypos,] <- pmin3(mt, mt_t)
+    DMt[,ypos] <- pmin3(mt, mt_t)
 
     # Update negative deltas:
     ND0[xpos, ] <- (m0 > mt_0)
@@ -394,7 +399,7 @@ nodf_one_link_removed <- function(mtx, pos, support_data){
     Fill <- list(F0, Ft)
     DM <- list(DM0, DMt)
     ND <- list(ND0, NDt)
-    S <- list(S0, St)
+    S <- c(S0, St)
     # Unpack all the support data:
     support_data <- list(MT, Fill, DM, ND, S)
     return(list(nodf, mtx, support_data))
@@ -451,10 +456,10 @@ nodf_one_link_added <- function(mtx, pos, support_data){
     mt <- rep(mt_t[ypos], length(mt_t))
 
     # Update the degree minima:
-    DM0[xpos,] <- pmin(m0, mt_0)
-    DM0[,xpos] <- pmin(m0, mt_0)
-    DMt[ypos,] <- pmin(mt, mt_t)
-    DMt[,ypos] <- pmin(mt, mt_t)
+    DM0[xpos,] <- pmin3(m0, mt_0)
+    DM0[,xpos] <- pmin3(m0, mt_0)
+    DMt[ypos,] <- pmin3(mt, mt_t)
+    DMt[,ypos] <- pmin3(mt, mt_t)
 
     # Update negative deltas:
     ND0[xpos, ] <- (m0 > mt_0)
@@ -491,7 +496,7 @@ nodf_one_link_added <- function(mtx, pos, support_data){
     Fill <- list(F0, Ft)
     DM <- list(DM0, DMt)
     ND <- list(ND0, NDt)
-    S <- list(S0, St)
+    S <- c(S0, St)
     # Unpack all the support data:
     support_data <- list(MT, Fill, DM, ND, S)
     return(list(nodf, mtx, support_data))
@@ -505,6 +510,19 @@ nodf_neighbor <- function(mtx, oPos, zPos, support_data){
     my_res  <- nodf_one_link_added(mtx, zPos, support_data)
     # my_res = list(nodf, mtx, support_data)
     return(my_res)
+}
+
+# Efficient way to compute the nodf value of a neighbor graph
+nodf_neighbor2 <- function(mtx, oPos, zPos, mt_0, mt_t, F0, Ft, DM0, DMt, ND0, NDt, S){
+    xpos <- zPos[[1]]
+    ypos <- zPos[[2]]
+    my_nodf0<- nodf_one_link_added_cpp(mtx, xpos, ypos, mt_0, mt_t, F0, Ft,
+                                        DM0, DMt, ND0, NDt, S)
+    xpos <- oPos[[1]]
+    ypos <- oPos[[2]]
+    my_nodf <- nodf_one_link_removed_cpp(mtx, xpos, ypos, mt_0, mt_t, F0, Ft,
+                                        DM0, DMt, ND0, NDt, S)
+    return(my_nodf)
 }
 
 get_valid_ones <- function(mtx){

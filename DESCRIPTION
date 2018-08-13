@@ -1,10 +1,13 @@
 Package: maxnodf
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Approximate NODF-maximising graphs.
+Version: 0.1.0.9000
+Authors@R: person("Christoph ", "Hoeppke", email = "cmh227@alumni.cam.ac.uk", role = c("aut", "cre"))
+Description: This package contains functions to generate graphs that maximise the NODF metric for a given number of rows, columns and links. As nestedness in ecological networks depends on the size of the networks we require normalisation to make them comparable [1]. We offer three highly optimised algorithms to find the optimising graphs so that users can choose an appropriate trade off between computation time and NODF value for the task at hand. [1] Chuliang Song, Rudolf P. Rohr, and Serguei Saavedra. Why are some plantpollinator networks more nested than others? Journal of Animal
+Ecology, 86(6):1417–1424.
 Depends: R (>= 3.4.4)
-License: What license is it under?
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0.9000
+LinkingTo: Rcpp
+Imports: Rcpp
