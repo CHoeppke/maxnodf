@@ -1,6 +1,5 @@
 #include <Rcpp.h>
 #include <math.h>
-#include <omp.h>
 #include <iostream>
 // [[Rcpp::plugins(openmp)]]
 using namespace Rcpp;
@@ -37,20 +36,16 @@ void put_val(NumericMatrix mtx, int xpos, int ypos, double val){
 double get_contributions_cpp(NumericMatrix F, NumericMatrix ND, NumericMatrix DM, int idx){
     double A1 = 0.0;
     omp_set_num_threads(4);
-    #pragma omp parallel for schedule(static, 16) num_threads(4)
     for (int i = 0; i < F.ncol(); ++i) {
         double val1 = F(idx, i);
         double val2 = DM(idx, i);
-        #pragma omp critical
         A1 = A1 + ND(idx,i)*(val1 / val2);
     }
 
     omp_set_num_threads(4);
-    #pragma omp parallel for schedule(static, 16) num_threads(4)
     for (int i = 0; i < F.nrow(); ++i) {
         double val1 = F(i, idx);
         double val2 = DM(i, idx);
-        #pragma omp critical
         A1 = A1 + ND(i,idx)*(val1 / val2);
     }
     return A1;
@@ -58,7 +53,6 @@ double get_contributions_cpp(NumericMatrix F, NumericMatrix ND, NumericMatrix DM
 
 void update_DegreeMinima(NumericMatrix DM, NumericVector mt, double val, int idx){
     omp_set_num_threads(4);
-    #pragma omp parallel for simd schedule(static, 16)
     for (int i = 0; i < DM.ncol(); ++i) {
         double myval = std::min(val, mt[i]);
         DM(idx, i) = myval;
@@ -68,7 +62,6 @@ void update_DegreeMinima(NumericMatrix DM, NumericVector mt, double val, int idx
 
 void update_NegativeDeltas(NumericMatrix ND, NumericVector mt, int val, int idx){
     omp_set_num_threads(4);
-    #pragma omp parallel for simd schedule(static, 16)
     for (int i = 0; i < ND.ncol(); ++i) {
         // Update the row
         double myval = (val > mt[i]);
@@ -351,10 +344,8 @@ NumericMatrix get_valid_ones_cpp(NumericMatrix mtx){
     // how much memory to allocate:
     int numOnes = 0;
 
-    #pragma omp parallel for
     for (int i = 1; i < NodesA; ++i) {
         for (int j = 1; j < NodesB; ++j) {
-            #pragma omp critical
             numOnes += mtx(i,j);
         }
     }
@@ -378,7 +369,6 @@ NumericMatrix websearch_cpp(NumericMatrix mtx, int threshold = 2){
     int NodesB = mtx.ncol();
 
     int nRows = 0;
-    #pragma omp parallel for
     for (int i = 1; i < NodesA; ++i) {
         for (int j = 1; j < NodesB; ++j) {
             if(mtx(i,j) == 0){
@@ -392,7 +382,6 @@ NumericMatrix websearch_cpp(NumericMatrix mtx, int threshold = 2){
                     nbhd_val += mtx(i, j+1);
                 }
                 if(nbhd_val >= threshold){
-                    #pragma omp critical
                     nRows += 1;
                 }
             }
