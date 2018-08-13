@@ -35,14 +35,12 @@ void put_val(NumericMatrix mtx, int xpos, int ypos, double val){
 
 double get_contributions_cpp(NumericMatrix F, NumericMatrix ND, NumericMatrix DM, int idx){
     double A1 = 0.0;
-    omp_set_num_threads(4);
     for (int i = 0; i < F.ncol(); ++i) {
         double val1 = F(idx, i);
         double val2 = DM(idx, i);
         A1 = A1 + ND(idx,i)*(val1 / val2);
     }
 
-    omp_set_num_threads(4);
     for (int i = 0; i < F.nrow(); ++i) {
         double val1 = F(i, idx);
         double val2 = DM(i, idx);
@@ -52,7 +50,6 @@ double get_contributions_cpp(NumericMatrix F, NumericMatrix ND, NumericMatrix DM
 }
 
 void update_DegreeMinima(NumericMatrix DM, NumericVector mt, double val, int idx){
-    omp_set_num_threads(4);
     for (int i = 0; i < DM.ncol(); ++i) {
         double myval = std::min(val, mt[i]);
         DM(idx, i) = myval;
@@ -61,7 +58,6 @@ void update_DegreeMinima(NumericMatrix DM, NumericVector mt, double val, int idx
 }
 
 void update_NegativeDeltas(NumericMatrix ND, NumericVector mt, int val, int idx){
-    omp_set_num_threads(4);
     for (int i = 0; i < ND.ncol(); ++i) {
         // Update the row
         double myval = (val > mt[i]);
