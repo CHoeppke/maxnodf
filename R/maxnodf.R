@@ -17,15 +17,18 @@ maxnodf <- function(web, quality = 0){
     if(quality == 0){
         # Use a basic greedy algorithm to find the optimum
         mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        cat("\n")
     }else if(quality == 1){
         # Use a greedy algorithm with one round of hill climbing to
         # improve the results
         mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        cat("\n")
         mtx <- full_hill_climb_cpp(mtx)
     }else if(quality == 2){
         # Use a full round of simulated annealing to find a highly
         # improved solution.
         mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        cat("\n")
         mtx <- sim_anneal_opt_cpp(mtx)
     }
     return(list(nodf_cpp(mtx), mtx))
