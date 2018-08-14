@@ -14,7 +14,6 @@ maxnodf <- function(web, quality = 0){
     #' @import Rcpp
     #' @export
 
-
     NodesA <- -1
     NodesB <- -1
     Edges <- -1
@@ -57,7 +56,7 @@ maxnodf <- function(web, quality = 0){
         stop("Number of links needs to satisfy 'Links <= nrow(web) * ncol(web).")
     }
     if( !quality %in% 0:2){
-        stop("Please chose a valid quality parameter. Options: \n\tquality = 0 -> Use a very fast greedy algorithm.\n\tquality = 1 -> Improved result using hillclimbing in combination with greedy.\n\tquality = 2 -> Use a simulated annealing algorith. Best results but requires the most computation time")
+        stop("Please chose a valid quality parameter. Options: \n\tquality = 0 -> Use a very fast greedy algorithm.\n\tquality = 1 -> Improved result using hillclimbing in combination with greedy.\n\tquality = 2 -> Use a simulated annealing algorithm. Best results but requires the most computation time.")
     }
 
     if(quality == 0){
@@ -77,5 +76,5 @@ maxnodf <- function(web, quality = 0){
         cat("\n")
         mtx <- sim_anneal_opt_cpp(mtx)
     }
-    return(list(nodf_cpp(mtx), mtx))
+    return(list(max_nodf <- nodf_cpp(mtx), max_nodf_mtx <- mtx))
 }
