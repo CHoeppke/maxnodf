@@ -40,8 +40,10 @@ maxnodf <- function(web, quality = 0){
         # Use a full round of simulated annealing to find a highly
         # improved solution.
         mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        print("\n")
         mtx <- sim_anneal_opt_cpp(mtx)
     }
+    print("\n")
     return(list(nodf_cpp(mtx), mtx))
 }
 

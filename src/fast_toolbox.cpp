@@ -593,7 +593,6 @@ NumericMatrix full_hill_climb_cpp(NumericMatrix mtx, int R = 2){
 NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         iters = 8, double init_temp = 0.25, double min_temp = 0.0001){
     // Outer frame of the simulated annealing simulation
-    Rcout << "Test1" << std::endl;
     int cool_steps = round(log(min_temp / init_temp) /log(alpha));
 
     NumericMatrix opt_mtx = copy_mtx(mtx);
@@ -642,13 +641,9 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
             int oIdx = my_rand_int(0, oPosList.nrow() - 1);
             int zIdx = my_rand_int(0, zPosList.nrow() - 1);
 
-            Rcout << "Len oPosList" << oPosList.nrow() << std::endl;
-            Rcout << "Len zPosList" << zPosList.nrow() << std::endl;
-
             NumericVector oPos = get_row_from_mtx(oPosList, oIdx);
             NumericVector zPos = get_row_from_mtx(zPosList, zIdx);
 
-            Rcout << "Test3" << std::endl;
             // Perform the swap:
             //Rcout << oPos[0]<< "," << oPos[1] <<": "<< mtx(oPos[0]-1, oPos[1]-1)<< std::endl;
             rem_nodf = nodf_one_link_added_cpp(mtx, zPos[0], zPos[1], mt_0, mt_t, F0, Ft, DM0, DMt, ND0, NDt, S);
