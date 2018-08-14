@@ -593,6 +593,7 @@ NumericMatrix full_hill_climb_cpp(NumericMatrix mtx, int R = 2){
 NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         iters = 8, double init_temp = 0.25, double min_temp = 0.0001){
     // Outer frame of the simulated annealing simulation
+    Rcout << "Test1" << std::endl;
     int cool_steps = round(log(min_temp / init_temp) /log(alpha));
 
     NumericMatrix opt_mtx = copy_mtx(mtx);
