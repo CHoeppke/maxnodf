@@ -715,5 +715,6 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         }
         //Rcout << "Curr nodf: " << curr_nodf << " Opt nodf: " << opt_nodf << std::endl;
     }
+    Rcout << std::endl;
     return opt_mtx;
 }
