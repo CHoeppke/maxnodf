@@ -1,6 +1,6 @@
 Package: maxnodf
 Title: Approximate NODF-maximising graphs
-Version: 0.1.0.9000
+Version: 0.2.0.9000
 Authors@R: person("Christoph ", "Hoeppke", email = "cmh227@alumni.cam.ac.uk", role = c("aut", "cre"))
 Description: This package contains functions to generate graphs that maximise
     the NODF metric for a given number of rows, columns and links. As nestedness in

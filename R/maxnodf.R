@@ -1,40 +1,20 @@
 #' Compute NODF-maximising network
 #'
+#' @param web   Either a numeric matrix describing a mutualistic network
+#'              or a numeric vector of length 3 of the form
+#'              web = c(#Rows, #Columns, #Links).
 #' @param quality   An optional quality parameter to control the
 #'                  tradeoff between computation time and result quality.
 #' @return Nestedness and graph-matrix of the NODF maximising network.
 #' @examples
-#' maxnodf(web)
-#' maxnodf(web, 2)
+#' maxnodf(matrix(1.0, 12, 10))
+#' maxnodf(c(14, 13, 52), 2)
 maxnodf <- function(web, quality = 0){
     #' @useDynLib maxnodf
     #' @import Rcpp
     #' @export
-    config <- sanity_check(web, quality)
-    NodesA <- config[[1]]
-    NodesB <- config[[2]]
-    Edges <- config[[3]]
-    if(quality == 0){
-        # Use a basic greedy algorithm to find the optimum
-        mtx <- greedy_solve2(NodesA, NodesB, Edges)
-        cat("\n")
-    }else if(quality == 1){
-        # Use a greedy algorithm with one round of hill climbing to
-        # improve the results
-        mtx <- greedy_solve2(NodesA, NodesB, Edges)
-        cat("\n")
-        mtx <- full_hill_climb_cpp(mtx)
-    }else if(quality == 2){
-        # Use a full round of simulated annealing to find a highly
-        # improved solution.
-        mtx <- greedy_solve2(NodesA, NodesB, Edges)
-        cat("\n")
-        mtx <- sim_anneal_opt_cpp(mtx)
-    }
-    return(list(nodf_cpp(mtx), mtx))
-}
 
-sanity_check <- function(web, quality){
+
     NodesA <- -1
     NodesB <- -1
     Edges <- -1
@@ -79,5 +59,23 @@ sanity_check <- function(web, quality){
     if( !quality %in% 0:2){
         stop("Please chose a valid quality parameter. Options: \n\tquality = 0 -> Use a very fast greedy algorithm.\n\tquality = 1 -> Improved result using hillclimbing in combination with greedy.\n\tquality = 2 -> Use a simulated annealing algorith. Best results but requires the most computation time")
     }
-    return(list(NodesA, NodesB, Edges, quality))
+
+    if(quality == 0){
+        # Use a basic greedy algorithm to find the optimum
+        mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        cat("\n")
+    }else if(quality == 1){
+        # Use a greedy algorithm with one round of hill climbing to
+        # improve the results
+        mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        cat("\n")
+        mtx <- full_hill_climb_cpp(mtx)
+    }else if(quality == 2){
+        # Use a full round of simulated annealing to find a highly
+        # improved solution.
+        mtx <- greedy_solve2(NodesA, NodesB, Edges)
+        cat("\n")
+        mtx <- sim_anneal_opt_cpp(mtx)
+    }
+    return(list(nodf_cpp(mtx), mtx))
 }

@@ -2,27 +2,25 @@
 % Please edit documentation in R/maxnodf.R
 \name{maxnodf}
 \alias{maxnodf}
-\title{Compute NODF-maximising graph}
+\title{Compute NODF-maximising network}
 \usage{
-maxnodf(NodesA, NodesB, Edges, quality = 0)
+maxnodf(web, quality = 0)
 }
 \arguments{
-\item{NodesA}{The number of rows in the desired network.}
-
-\item{NodesB}{The number of columns in the desired network.}
-
-\item{Edges}{The number of Edges in the desired network.}
+\item{web}{Either a numeric matrix describing a mutualistic network
+or a numeric vector of length 3 of the form
+web = c(#Rows, #Columns, #Links).}
 
 \item{quality}{An optional quality parameter to control the
 tradeoff between computation time and result quality.}
 }
 \value{
-Approximation of the NODF maximising graph.
+Nestedness and graph-matrix of the NODF maximising network.
 }
 \description{
-Compute NODF-maximising graph
+Compute NODF-maximising network
 }
 \examples{
-maxnodf(14, 13, 52)
-maxnodf(14, 13, 52, 2)
+maxnodf(matrix(1.0, 12, 10))
+maxnodf(c(14, 13, 52), 2)
 }

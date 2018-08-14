@@ -11,7 +11,7 @@ test_that("nodf_cpp",{
     A[6,1:1] <- 1.0
     A[7,1:1] <- 1.0
     expect_equal(nodf_cpp(A), 0.709677419354839)
-    B <- maxnodf(14, 13, 52, 0)
+    B <- maxnodf(c(14, 13, 52), 0)[[2]]
     expect_equal(nodf_cpp(B), 0.875739644970414)
 })
 
