@@ -68,9 +68,6 @@ sanity_check <- function(web, quality){
     }else{
         stop("Parameter 'web' is expected to either be a matrix or a vector containing the matrix dimentions and number of links.")
     }
-    print(NodesA)
-    print(NodesB)
-    print(Edges)
     if(Edges <= NodesA + NodesB){
         stop("Number of links needs to satisfy 'Links > nrow(web) + ncol(web).")
     }
