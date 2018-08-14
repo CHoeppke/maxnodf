@@ -635,9 +635,12 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
             // Choose random positions to swap:
             int oIdx = my_rand_int(0, oPosList.nrow() - 1);
             int zIdx = my_rand_int(0, zPosList.nrow() - 1);
+
+            Rcout << "Test2" << std::endl;
             NumericVector oPos = get_row_from_mtx(oPosList, oIdx);
             NumericVector zPos = get_row_from_mtx(zPosList, zIdx);
 
+            Rcout << "Test3" << std::endl;
             // Perform the swap:
             //Rcout << oPos[0]<< "," << oPos[1] <<": "<< mtx(oPos[0]-1, oPos[1]-1)<< std::endl;
             rem_nodf = nodf_one_link_added_cpp(mtx, zPos[0], zPos[1], mt_0, mt_t, F0, Ft, DM0, DMt, ND0, NDt, S);
