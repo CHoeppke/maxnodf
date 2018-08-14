@@ -636,7 +636,9 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
             int oIdx = my_rand_int(0, oPosList.nrow() - 1);
             int zIdx = my_rand_int(0, zPosList.nrow() - 1);
 
-            Rcout << "Test2" << std::endl;
+            Rcout << "Len oPosList" << oPosList.nrow() << std::endl;
+            Rcout << "Len zPosList" << zPosList.nrow() << std::endl;
+
             NumericVector oPos = get_row_from_mtx(oPosList, oIdx);
             NumericVector zPos = get_row_from_mtx(zPosList, zIdx);
 
