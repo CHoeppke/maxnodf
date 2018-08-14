@@ -40,11 +40,15 @@ maxnodf <- function(web, quality = 0){
         }
     }else if(is.vector(web)){
         if(length(web) == 3){
-            NodesA <- web[[1]]
-            NodesB <- web[[2]]
-            Edges <- web[[3]]
+            if(all(round(web) == web)){
+                NodesA <- web[[1]]
+                NodesB <- web[[2]]
+                Edges <- web[[3]]
+            }else{
+                stop("The vector 'web' is expected to have three integer members")
+            }
         }else{
-            stop("The vector 'web' is expected to have three entries.")
+            stop("The vector 'web' is expected to have three integer members")
         }
     }else{
         stop("Parameter 'web' is expected to either be a matrix or a vector containing the matrix dimentions and number of links.")
