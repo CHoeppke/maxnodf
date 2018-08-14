@@ -628,6 +628,12 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
     double old_nodf = curr_nodf;
     double rem_nodf = 0.0;
     double new_nodf = 0.0;
+    if(zPosList.nrow() < 1){
+        return opt_mtx;
+    }
+    if(oPosList.nrow() < 1){
+        return opt_mtx;
+    }
     for (int i = 0; i < cool_steps; ++i) {
         double progress = ((double) i + 1.0) / ((double) cool_steps);
         display_txt_pbar(progress);
@@ -714,6 +720,5 @@ NumericMatrix sim_anneal_opt_cpp(NumericMatrix mtx, double alpha = 0.998, int
         }
         //Rcout << "Curr nodf: " << curr_nodf << " Opt nodf: " << opt_nodf << std::endl;
     }
-
     return opt_mtx;
 }
