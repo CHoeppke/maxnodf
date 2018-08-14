@@ -36,23 +36,27 @@ sanity_check <- function(web, quality){
     NodesA <- -1
     NodesB <- -1
     Edges <- -1
-    if(is.numeric.matrix(web)){
-        stop("Parameter 'web' is expected to be a numeric matrix or a numeric vector.")
-        web[web>0] <- 1
-        if(any(web < 0)){
-            stop("Invalid network. Ensure all elements of web >= 0.")
+    if(is.matrix(web)){
+        if(all(is.numeric(web))){
+            web[web>0] <- 1
+            if(any(web < 0)){
+                stop("Invalid network. Ensure all elements of web >= 0.")
+            }
+            mt_0  <- computeMT0(web)
+            mt_t  <- computeMTt(web)
+            if(any(mt_0 < 1)){
+                stop("Invalid network. Ensure all marginal totals are >= 1.")
+            }
+            if(any(mt_t < 1)){
+                stop("Invalid network. Ensure all marginal totals are >= 1.")
+            }
+            NodesA <- nrow(web)
+            NodesB <- ncol(web)
+            Edges <- sum(web)
         }
-        mt_0  <- computeMT0(web)
-        mt_t  <- computeMTt(web)
-        if(any(mt_0 < 1)){
-            stop("Invalid network. Ensure all marginal totals are >= 1.")
+        else{
+            stop("Parameter 'web' is expected to be a numeric matrix or a numeric vector.")
         }
-        if(any(mt_t < 1)){
-            stop("Invalid network. Ensure all marginal totals are >= 1.")
-        }
-        NodesA <- nrow(web)
-        NodesB <- ncol(web)
-        Edges <- sum(web)
     }else if(is.vector(web)){
         if(length(web) == 3){
             NodesA <- web[[1]]
