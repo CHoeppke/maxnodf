@@ -80,5 +80,5 @@ maxnodf <- function(web, quality = 0){
         cat("\n")
         mtx <- sim_anneal_opt_cpp(mtx)
     }
-    return(list(max_nodf <- nodf_cpp(mtx), max_nodf_mtx <- mtx))
+    return(list(max_nodf = nodf_cpp(mtx), max_nodf_mtx = mtx))
 }
