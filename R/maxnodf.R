@@ -71,7 +71,7 @@ sanity_check <- function(web, quality){
     if(Edges <= NodesA + NodesB){
         stop("Number of links needs to satisfy 'Links > nrow(web) + ncol(web).")
     }
-    if(Edges >= NodesA * NodesB){
+    if(Edges > NodesA * NodesB){
         stop("Number of links needs to satisfy 'Links <= nrow(web) * ncol(web).")
     }
     if( !quality %in% 0:2){
