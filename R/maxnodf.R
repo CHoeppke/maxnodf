@@ -28,7 +28,6 @@ maxnodf <- function(web, quality = 0){
         mtx <- greedy_solve2(NodesA, NodesB, Edges)
         mtx <- sim_anneal_opt_cpp(mtx)
     }
-    print(" ")
     return(list(nodf_cpp(mtx), mtx))
 }
 
