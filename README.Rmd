@@ -26,7 +26,7 @@ devtools::install_github("CHoeppke/maxnodf")
 ```
 
 ## Use
-`maxnodf` has one function: `maxnodf()`. For a given network, `maxnodf` calculates the maximum nestedness that can be achieved in a network with a given number of rows, columns and links, subject to the constraint that all rows and columns must have at least one link (i.e. row and column totals must always be >= 1). As input, `maxnodf()` takes either a numeric matrix describing a bipartite network (a bipartite incidence matrix where elements are positive numbers if nodes interact, and 0 otherwise) or a numeric vector of length 3 of the form `c(#Rows, #Columns, #Links)`.
+`maxnodf` has one function: `maxnodf()`. For a given network, `maxnodf` calculates the maximum nestedness that can be achieved in a network with a given number of rows, columns and links, subject to the constraint that all rows and columns must have at least one link (i.e. row and column totals must always be >= 1). As input, `maxnodf()` takes either a numeric matrix describing a bipartite network (a bipartite incidence matrix where elements are positive numbers if nodes interact, and 0 otherwise) or a numeric vector of length three of the form `c(#Rows, #Columns, #Links)`.
 
 This allows nestedness values to be normalised as NODF/max(NODF) following Song et al (2017). To control for connectance and network size, Song et al. (2017) suggest an additional normalisation that can be used: (NODF/max(NODF))/(C * log(S)) where C is the network connectance and S is the geometric mean of the number of plants and pollinators in the network.
 

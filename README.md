@@ -24,7 +24,7 @@ that all rows and columns must have at least one link (i.e. row and
 column totals must always be \>= 1). As input, `maxnodf()` takes either
 a numeric matrix describing a bipartite network (a bipartite incidence
 matrix where elements are positive numbers if nodes interact, and 0
-otherwise) or a numeric vector of length 3 of the form `c(#Rows,
+otherwise) or a numeric vector of length three of the form `c(#Rows,
 #Columns, #Links)`.
 
 This allows nestedness values to be normalised as NODF/max(NODF)
