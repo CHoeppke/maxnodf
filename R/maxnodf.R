@@ -17,7 +17,7 @@
 #' }
 #' @return Returns a list of length 2, where the first element ('max_nodf') is the maximum nestedness of the network and the second element ('max_nodf_mtx') is the incidence matrix corresponding to this maximum nestedness.
 #' @references 
-#' Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others?. Journal of Animal Ecology, 86(6), pp.1417-1424
+#' Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others? Journal of Animal Ecology, 86(6), pp.1417-1424
 #' @examples
 #' maxnodf(matrix(1.0, 12, 10))
 #' maxnodf(c(14, 13, 52), 2)

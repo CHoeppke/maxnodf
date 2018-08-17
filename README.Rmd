@@ -49,4 +49,4 @@ maxnodf(web = m, quality = 2) # calculate the maximum nestedness
 The code is released under the MIT license (see `LICENSE` file).
 
 ## References
-Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others?. Journal of Animal Ecology, 86(6), pp.1417-1424.
+Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others? Journal of Animal Ecology, 86(6), pp.1417-1424.
