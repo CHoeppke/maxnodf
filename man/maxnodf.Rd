@@ -36,5 +36,5 @@ maxnodf(matrix(1.0, 12, 10))
 maxnodf(c(14, 13, 52), 2)
 }
 \references{
-Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others?. Journal of Animal Ecology, 86(6), pp.1417-1424
+Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others? Journal of Animal Ecology, 86(6), pp.1417-1424
 }
