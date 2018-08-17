@@ -57,7 +57,7 @@ maxnodf(web = m, quality = 2) # calculate the maximum nestedness
 
 ## License
 
-The code is released under the MIT license (see LICENSE file).
+The code is released under the MIT license (see `LICENSE` file).
 
 ## References
 
