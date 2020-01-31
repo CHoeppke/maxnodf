@@ -10,11 +10,11 @@ Description: This package contains functions to generate graphs that maximise
     computation time and NODF value for the task at hand. [1] Chuliang Song, Rudolf
     P. Rohr, and Serguei Saavedra. Why are some plantpollinator networks more nested
     than others? Journal of Animal Ecology, 86(6):1417–1424.
-Depends: R (>= 3.4.4)
+Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 7.0.2
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.12.18),
     stats (>= 3.4.4),
