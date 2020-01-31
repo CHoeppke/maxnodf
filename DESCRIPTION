@@ -2,7 +2,7 @@ Package: maxnodf
 Title: Approximate Maximisation of Nestedness in Bipartite Graphs
 Version: 1.0.0
 Authors@R: c(person("Christoph ", "Hoeppke", email = "christoph.hoeppke@googlemail.com", role = c("aut", "cre")),
-person("Benno ", "Simmons", email = "benno.simmons@gmail.com", role = c("aut")))
+    person("Benno ", "Simmons", email = "benno.simmons@gmail.com", role = c("aut")))
 Description: This package contains functions to generate graphs that maximise
     the NODF metric for a given number of rows, columns and links. As nestedness in
     ecological networks depends on the size of the networks we require normalisation
