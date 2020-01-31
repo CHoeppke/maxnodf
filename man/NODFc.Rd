@@ -29,7 +29,7 @@ are slower, but find better optima.
 }
 }
 \examples{
-NODFc(matrix(1.0, 12, 10), quality = 0)
+NODFc(matrix(sample(x = 0:1, size = 100, replace = TRUE),10,10), quality = 0)
 }
 \references{
 Song, C., Rohr, R.P. and Saavedra, S., 2017. Why are some plant–pollinator networks more nested than others? Journal of Animal Ecology, 86(6), pp.1417-1424
